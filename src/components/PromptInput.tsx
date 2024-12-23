@@ -6,9 +6,10 @@ import { Send } from "lucide-react";
 interface PromptInputProps {
   onSubmit: (prompt: string) => void;
   isLoading: boolean;
+  isDisabled?: boolean;
 }
 
-const PromptInput = ({ onSubmit, isLoading }: PromptInputProps) => {
+const PromptInput = ({ onSubmit, isLoading, isDisabled }: PromptInputProps) => {
   const [prompt, setPrompt] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -25,11 +26,12 @@ const PromptInput = ({ onSubmit, isLoading }: PromptInputProps) => {
         value={prompt}
         onChange={(e) => setPrompt(e.target.value)}
         className="min-h-[100px] resize-none focus:ring-2 focus:ring-primary/20 transition-all"
+        disabled={isDisabled}
       />
       <Button 
         type="submit" 
         className="w-full gap-2 bg-primary hover:bg-primary/90 transition-colors"
-        disabled={isLoading || !prompt.trim()}
+        disabled={isLoading || !prompt.trim() || isDisabled}
       >
         {isLoading ? (
           <>

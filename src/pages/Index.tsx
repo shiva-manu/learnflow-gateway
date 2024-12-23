@@ -17,7 +17,9 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 py-12 px-4">
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-4xl font-bold text-center mb-2">Learning Path Generator</h1>
+        <h1 className="text-4xl font-bold text-center mb-2 bg-gradient-to-r from-primary to-purple-600 text-transparent bg-clip-text">
+          Learning Path Generator
+        </h1>
         <p className="text-gray-600 text-center mb-8">
           Enter what you want to learn, and we'll create a personalized learning path for you
         </p>
@@ -30,7 +32,7 @@ const Index = () => {
           </div>
         )}
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
           {mockLearningPath.map((day) => (
             <DayCard key={day.day} day={day} />
           ))}

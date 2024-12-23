@@ -3,20 +3,28 @@ import PromptInput from "@/components/PromptInput";
 import DayCard from "@/components/DayCard";
 import { mockLearningPath } from "@/data/mockData";
 import { useToast } from "@/components/ui/use-toast";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 const Index = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [showDays, setShowDays] = useState(false);
-  const [isGenerated, setIsGenerated] = useState(false);
+  const queryClient = useQueryClient();
   const { toast } = useToast();
+
+  const { data: learningPathData } = useQuery({
+    queryKey: ['learningPath'],
+    queryFn: () => null,
+    initialData: null
+  });
 
   const handleSubmit = async (prompt: string) => {
     setIsLoading(true);
     // Simulate API call
     setTimeout(() => {
       setIsLoading(false);
-      setShowDays(true);
-      setIsGenerated(true);
+      queryClient.setQueryData(['learningPath'], { 
+        generated: true,
+        data: mockLearningPath 
+      });
       toast({
         title: "Learning path generated!",
         description: "Your personalized learning path is ready.",
@@ -34,7 +42,11 @@ const Index = () => {
           Enter what you want to learn, and we'll create a personalized learning path for you
         </p>
         
-        <PromptInput onSubmit={handleSubmit} isLoading={isLoading} isDisabled={isGenerated} />
+        <PromptInput 
+          onSubmit={handleSubmit} 
+          isLoading={isLoading} 
+          isDisabled={learningPathData?.generated} 
+        />
         
         {isLoading && (
           <div className="text-center mt-8">
@@ -42,10 +54,10 @@ const Index = () => {
           </div>
         )}
         
-        {showDays && (
+        {learningPathData?.generated && (
           <div className="animate-fade-in">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
-              {mockLearningPath.map((day) => (
+              {learningPathData.data.map((day) => (
                 <DayCard key={day.day} day={day} />
               ))}
             </div>
